@@ -30,5 +30,8 @@ $articles = $model->getAllArticles();
 <?foreach ($articles as $key => $val):?>
 
     <h3><?=$val['title'];?></h3>
-    <p><a href = "create_article.php/?delid=<?=$val['id']?>">delete</a></p>
+    <p><a href = "create_article.php/?delid=<?=$val['id']?>">delete</a> |
+        <a href = "update.php/?id=<?=$val['id']?>">update</a>
+    </p>
+
 <?endforeach;?>

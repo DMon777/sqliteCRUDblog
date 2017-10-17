@@ -2,8 +2,19 @@
 
 require_once "DB.php";
 
+/**
+ * Class Model
+ */
+
 class Model
 {
+
+    /**
+     * Object DB class
+     *
+     * @var db object
+     * @access protected
+     */
     protected $db;
 
     public function __construct()
@@ -11,10 +22,15 @@ class Model
         $this->db = new DB();
     }
 
+    /**
+     * @param bool|string $path
+     * @access private
+     * @return void;
+     */
     private function redirect($path = false)
     {
      if(!$path){
-         header('Location :'.$_SERVER['HTTP_REFERER']);
+         header('Location:'.$_SERVER['HTTP_REFERER']);
      } else{
          header('Location: http://sqlitecrudblog.local/'.$path);
      }
@@ -65,7 +81,7 @@ class Model
      */
     public function getArticle($id){
        $id = (int)$id;
-       $sql = "SELECT title,fullText FROM articles WHERE id=".$id;
+       $sql = "SELECT * FROM articles WHERE id=".$id;
        $result = $this->db->pdoQuery($sql);
        $article = $result->fetch(PDO::FETCH_ASSOC);
        return $article;
@@ -77,6 +93,18 @@ class Model
         $sql = "DELETE FROM articles WHERE id =".$id;
         $this->db->pdoQuery($sql);
         $this->redirect('create_article.php');
+    }
+
+    public function updateArticle($id,$title,$intro_text,$full_text)
+    {
+        $title = $this->db->safeVar($title);
+        $intro_text = $this->db->safeVar($intro_text);
+        $full_text = $this->db->safeVar($full_text);
+        $id = (int)$id;
+        $sql = "UPDATE articles SET title = $title,introText = $intro_text,
+        fullText = $full_text WHERE id=$id";
+        $this->db->pdoQuery($sql);
+        $this->redirect();
     }
 
 }

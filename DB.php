@@ -2,7 +2,10 @@
 
 class DB
 {
-
+    /**
+     * @var PDO object
+     * @access private
+     */
     private $db;
 
     public function __construct()
